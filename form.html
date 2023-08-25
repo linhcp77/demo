@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>form test</title> 
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-100">
+  <style>
+    .ql-editor {
+      white-space: unset !important;
+    }
+
+    .render-blog {
+      margin: 10px;
+      display: flex;
+      flex-direction: row;
+    }
+    .render-blog div {
+      margin-right: 10px;
+    }
+    .render-blog .button-disable {
+      background: red;
+    }
+    .render-blog  .button-disable:hover {
+      background: #ff000085;
+    }
+
+    .render-blog .button-enable {
+      background: green;
+    }
+    .render-blog .button-enable:hover {
+      background: #008000a8;
+    }
+  </style>
+  <style>
+    label {
+      font-weight: bold;
+      font-size: 1.1rem !important;
+    }
+
+    .form-item {
+      max-width: 45%;
+    }
+
+    #promotion {
+      min-height: 200px;
+    }
+
+    #content {
+      min-height: 200px;
+    }
+
+    #price {
+      display: flex;
+      flex-direction: row;
+    }
+
+    #description {
+      height: 200px;
+    }
+
+    #insertImageBtn {
+      color: #fff;
+    }
+
+    .slide-image_add,
+    .slide-specification_add {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+    }
+
+    .slide-image_add-url,
+    .slide-image_add-typefile {}
+
+    .slide-image_add-submit,
+    .slide-specification_add-submit {
+      border-radius: 0px 5px 5px 0px;
+      padding: 10px;
+      background-color: rgb(185, 185, 185);
+    }
+
+    .slide-image_add-item,
+    .slide-specification_add-item {
+      display: flex;
+      flex-direction: row;
+      /* align-items: center; */
+      justify-content: flex-start;
+      /* min-height: 60px; */
+      border-bottom: 1px solid gray;
+      padding: 2px;
+    }
+
+    .slide-image_add-item img,
+    .slide-specification_add-item img {
+      /* width: 100px; */
+      border: 1px solid gray;
+      height: 44px;
+    }
+
+    .slide-specification_add-item .title {
+      width: 100%;
+      /* text-align: center; */
+      border-right: 1px solid gray;
+      display: grid;
+      /* align-items: center; */
+      place-content: center;
+    }
+
+    .slide-image_add-item button,
+    .slide-specification_add-item button {
+      /* background-color: #6a68ff; */
+      color: #fff;
+      height: 100%;
+      /* width: 170%; */
+      /* font-size: 20px; */
+      padding: 10px;
+      /* place-items: center; */
+      display: grid;
+      place-content: center;
+    }
+
+    .slide-specification_add-item .type {
+      max-width: 183px;
+
+    }
+
+    .slide-image_add-item .type,
+    .slide-specification_add-item .type {
+      /* height: 100%; */
+      width: 170%;
+      /* font-size: 20px; */
+      padding: 10px;
+      place-items: center;
+      display: inline-block;
+      /* flex-wrap: wrap; */
+      word-wrap: break-word;
+      /* width: 300px; */
+    }
+
+    .slide-specification_add-typefile {
+      width: 170% !important;
+    }
+
+
+    .slide-image-list,
+    .slide-specification-list {
+      border: 1px solid rgb(0 0 0 / 10%);
+      min-height: 200px;
+      max-height: 400px;
+      /* display: flex; */
+      /* flex-direction: column; */
+      overflow-y: scroll;
+    }
+
+    @media (max-width: 768px) {
+      .form-insert {
+        display: flex;
+        flex-direction: row;
+
+      }
+    }
+
+    /* Media query for iPad devices */
+    @media (min-width: 769px) and (max-width: 2024px) {
+      .form-insert {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+
+      }
+
+      .form-item {
+        width: 100%;
+
+      }
+    }
+  </style>
+  <div class="render-blog  mx-auto bg-white p-8 rounded-lg shadow-md">
+    <div class="render-blog-editpage_redirect  w-fit flex place-content-center pointer-events-auto rounded-md  py-2 px-3 text-[0.8125rem] font-semibold leading-5 text-white ">Edit page</div>
+    <div class="render-blog-post_redirect  w-fit flex place-content-center pointer-events-auto rounded-md  py-2 px-3 text-[0.8125rem] font-semibold leading-5 text-white ">Blog post</div>
+    <div class="render-blog-copycontent button-enable w-fit flex place-content-center pointer-events-auto rounded-md  py-2 px-3 text-[0.8125rem] font-semibold leading-5 text-white ">Copy content</div>
+  </div>
+  <div class="container mx-auto mt-8">
+    <div class=" mx-auto bg-white p-8 rounded-lg shadow-md">
+      <h2 class="text-2xl font-semibold mb-4">Form nhập sản phẩm</h2>
+      <div class="form-insert">
+        <div class="form-item mx-2">
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="title">Tiêu đề:</label>
+            <input
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="title" type="text" placeholder="Tiêu đề bài viết" />
+          </div>
+
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="labels">Thẻ (Labels):</label>
+            <input
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="labels" type="text" placeholder="label1, label2, label3" />
+          </div>
+
+
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="promotion">Khuyến mãi:</label>
+            <div id="promotion"></div>
+            <!-- <textarea
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="content" rows="6" placeholder="Nội dung bài viết"></textarea> -->
+          </div>
+
+          <div class="slide-specification" id="slide-specification">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="slide-specification_add">Thông số kĩ
+              thuật:</label>
+            <div class="slide-specification_add" id="slide-specification_add">
+              <input
+                class="slide-specification_add-url shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                type="text" placeholder="CPU">
+              <input
+                class="slide-specification_add-typefile shadow appearance-none border rounded w-[50%] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                type="text" placeholder="i9 13900HX">
+              <button class="slide-specification_add-submit" type="button">&plus;</button>
+            </div>
+            <div class="slide-specification-list">
+
+            </div>
+          </div>
+
+        </div>
+        <div class="form-item mx-2">
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="product-code">Mã sản phẩm:</label>
+            <input
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="product-code" type="text" placeholder="Mã sản phẩm" />
+          </div>
+
+
+          <div class="price" id="price">
+            <div class="mb-4">
+              <label class="block text-gray-700 text-sm font-bold mb-2" for="old-price">Giá gốc:</label>
+              <input
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="old-price" type="number" placeholder="XXXX vnđ" />
+            </div>
+            <div class="mb-4">
+              <label class="block text-gray-700 text-sm font-bold mb-2" for="new-price">Giá bán:</label>
+              <input
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="new-price" type="number" placeholder="XXXX vnđ" />
+            </div>
+          </div>
+
+          <div class="slide-image mb-2" id="slide-image" style="display: none;">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="slide-image_add">Slide ảnh</label>
+            <div class="slide-image_add" id="slide-image_add">
+              <input
+                class="slide-image_add-url shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                type="text" placeholder="https://example.com/placeholder/now.jpg">
+              <input
+                class="slide-image_add-typefile shadow appearance-none border rounded w-[50%] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                type="text" placeholder="image/jpg">
+              <button class="slide-image_add-submit" type="button">&plus;</button>
+            </div>
+            <div class="slide-image-list">
+
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="description">Mô tả</label>
+            <div id="description"></div>
+          </div>
+        </div>
+
+      </div>
+      <div class="mx-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="content">Nội dung:</label>
+
+        <div id="content"></div>
+        <button type="button" id="insertImageBtn" class="rounded-sm p-2 bg-slate-400 my-2 text-xl">
+          Dán ảnh
+        </button>
+      </div>
+
+      
+
+      <div class="flex justify-end my-6">
+
+        <div class="flex flex-row aitems-center mx-4">
+          <label class="block text-gray-700 text-sm font-bol leading-8 text-center mx-2" for="title">Mã xác nhận</label>
+              <input
+                class="shadow appearance-none border rounded w-[150px] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="passCode" type="text" placeholder="Mã xác nhận" />
+        </div>
+
+        <button
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          type="button" id="send-post">
+          Gửi bài viết
+        </button>
+      </div>
+    </div>
+  </div>
+
+   <script>
+const createElement = (domString) =>
+  new DOMParser().parseFromString(domString, "text/html").body.firstChild;
+const getParent = (element, selector) => {
+  while (element.parentElement) {
+    if (element.parentElement.matches(selector)) {
+      return element.parentElement;
+    }
+    element = element.parentElement;
+  }
+};
+
+class ErrorManager {
+  constructor() {
+    this.collection = [];
+  }
+
+  throwError(message) {
+    this.collection.push(message);
+    // throw new Error(message);
+  }
+}
+
+class ButtonManager {
+  constructor(element = document.body, template) {
+    this.element = element;
+    this.setEnable();
+    this.template = template;
+    this.id = this.generateRandomID();
+    this.redirectUrl;
+  }
+
+  generateRandomID() {
+    if (crypto) {
+      return crypto.randomUUID();
+    } else {
+      var chars =
+        "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz".split(
+          ""
+        );
+      if (!length) length = Math.floor(Math.random() * chars.length);
+      var str = "";
+      for (var i = 0; i < length; i++) {
+        str += chars[Math.floor(Math.random() * chars.length)];
+      }
+      return str;
+    }
+  }
+
+  addEvent(event, handle) {
+    this.element.addEventListener(event, (e) => {
+      if (e.target.getAttribute("button-disable").toString() === "false") {
+        handle(e.target);
+      }
+    });
+
+    return this;
+  }
+
+  setDisable() {
+    this.element.classList.remove("button-enable");
+    this.element.classList.add("button-disable");
+    this.element.setAttribute("button-disable", true);
+    return this;
+  }
+
+  setEnable() {
+    this.element.classList.remove("button-disable");
+    this.element.classList.add("button-enable");
+    this.element.setAttribute("button-disable", false);
+    return this;
+  }
+
+  setRedirect(href) {
+    var isDisable = this.element.getAttribute('button-disable');
+
+    if (isDisable.toString() === 'false') {
+      window.open(href, '_blank');
+    }
+
+    return this;
+  }
+}
+
+class PopupManager extends ButtonManager{
+  constructor(template, ) {
+    this.template = template;
+  }
+
+  showPopup(popupContent) {
+    var popupId = this.generateRandomID();
+    var popupElement = createElement(`
+
+    `);
+    popupContent.querySelector('.popup-close').addEventListener('click', );
+    document.body.append(popupElement);
+    return popupElement;
+  }
+
+  closePopup(popupId) {
+    document.querySelector(`.popup-wrap-${popupId}`);
+  }
+}
+
+class InputListManager extends ButtonManager {
+  constructor(
+    renderList,
+    storageList,
+    { titleElement, contentElement, template },
+    slideName
+  ) {
+    super();
+    this.renderList = renderList;
+    this.titleElement = titleElement;
+    this.contentElement = contentElement;
+    this.template = template;
+    this.storageList = storageList;
+    this.slideName = slideName;
+  }
+  static findItem(targetId, list) {
+    const index = list.findIndex(item => item.id === targetId);
+    return index;
+  }
+  addToList(title, content) {
+    var id = this.generateRandomID();
+    var list = this.storageList;
+    var upgradeKeyOrValueOfField = this.upgradeKeyOrValueOfField;
+    var element = createElement(`
+      <div id="data-${id}" class="slide-${this.slideName}_add-item">
+        ${this.template(title, content, id)}
+      </div>
+    `);
+    if (this.slideName == 'specification') {
+      element.querySelector('.type').addEventListener('input', (e) => {
+        upgradeKeyOrValueOfField(list, id, "content", e.target.innerText);
+      })
+      element.querySelector('.title').addEventListener('input', (e) => {
+        upgradeKeyOrValueOfField(list, id, "title", e.target.innerText);
+      })
+    }
+    this.storageList.push({ title, content, id });
+    this.renderList.append(element);
+    this.contentElement.value = "";
+    this.titleElement.value = "";
+    return this;
+  }
+  deleteFromList(id) {
+    this.storageList = this.storageList.filter((item) => item.id !== id);
+    document.querySelector(`#data-${id}`).remove();
+
+    return this;
+  }
+  upgradeKeyOrValueOfField(list, id, key, value) {
+    var index = InputListManager.findItem(id, list);
+    if (index !== -1) {
+      list[index][key] = value;
+    } else {
+      console.log(`Item with id ${targetId} not found`);
+    }
+    return this;
+  }
+}
+
+// var PASS_CODE = prompt("Nhập mã xác nhận");
+var preventSendPostButton = false;
+var readyToPost = false;
+var postData = {};
+const BloggerId = '8739244822710221933';
+var ErrorCollection = new ErrorManager();
+
+var blogPostRedirect = new ButtonManager(document.querySelector('.render-blog-post_redirect'));
+blogPostRedirect.setDisable();
+var blogEditPage = new ButtonManager(document.querySelector('.render-blog-editpage_redirect'));
+blogEditPage.setDisable();
+var copyContent = new ButtonManager(document.querySelector('.render-blog-copycontent'));
+copyContent.setDisable();
+copyContent.addEvent('click',(element) => {
+ try {
+  if (isNotEmpty(postData.content)) {
+    if (navigator.clipboard) {
+      console.log('Clipboard API available');
+      navigator.clipboard.writeText(postData.content).then(() => {
+        alert("Copy success");
+      }) ;
+    }
+  }
+ } catch (error) {
+    ErrorCollection.throwError(message);
+ }
+})
+
+var inputElement = {
+  title: document.querySelector("#title"),
+  promotion: document.querySelector("#promotion"),
+  labels: document.querySelector("#labels"),
+  productCode: document.querySelector("#product-code"),
+  oldPrice: document.querySelector("#old-price"),
+  newPrice: document.querySelector("#new-price"),
+  passCode: document.querySelector('#passCode')
+};
+
+// var BlockDiv = Quill.import('blots/block');
+// class DivBlot extends BlockDiv { }
+// DivBlot.blotName = 'div';
+// DivBlot.tagName = 'div';
+// Quill.register(DivBlot);
+
+var Delta = Quill.import('delta');
+var Parchment = Quill.import('parchment');
+
+class StableElement extends Parchment.Embed {
+  static create(value) {
+    let node = super.create();
+    node.innerHTML = value.text;
+    node.setAttribute('style', value.style);
+    node.classList.add('ql-center');
+    return node;
+  }
+  static value(node) {
+    return {
+      text: node.innerText,
+      style: node.getAttribute('style')
+    };
+  }
+
+}
+StableElement.blotName = 'separator';
+StableElement.tagName = 'div';
+StableElement.className = 'separator';
+StableElement.style = `clear: both; height:fit-content;`;
+Quill.register(StableElement);
+
+var promotion = new Quill("#promotion", {
+  theme: "snow",
+});
+
+var description = new Quill("#description", {
+  theme: "snow",
+});
+
+var content = new Quill("#content", {
+  theme: "snow",
+  modules: {
+    toolbar: [
+      [
+        {
+          header: [1, 2, 3, 4, 5, 6, false],
+        },
+      ],
+      ["bold", "italic", "underline", "strike"],
+      [
+        {
+          color: [],
+        },
+        {
+          background: [],
+        },
+      ],
+      [
+        {
+          list: "ordered",
+        },
+        {
+          list: "bullet",
+        },
+      ],
+      [
+        {
+          indent: "-1",
+        },
+        {
+          indent: "+1",
+        },
+      ],
+      ["blockquote", "code-block"],
+      ["link", "image", "video"],
+      ["clean"],
+    ],
+  },
+});
+
+var imageSlide = new InputListManager(
+  document.querySelector(".slide-image-list"),
+  [],
+  {
+    titleElement: document.querySelector(".slide-image_add-typefile"),
+    contentElement: document.querySelector(".slide-image_add-url"),
+    template: (title = "", content = "", id) =>
+      ` ${
+        content === "http://mau.post" || content === "http://tuychon.post"
+          ? `<div class="badge">${title
+              .replace(/\{|}/g, "")
+              .split(",")
+              .map(
+                (item) =>
+                  `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-500 text-white">
+                  ${item.trim()}
+                  </span>`
+              )} </div>`
+          : `<img src="${content}" /> <div class="type">${title}</div>`
+      } <button type="button" class="slide-image_add-delete bg-blue-500" data-delete="${id}" onclick="imageSlide.deleteFromList(this.getAttribute('data-delete'))" > x </button>
+`,
+  },
+  "image"
+);
+document
+  .querySelector(".slide-image_add-submit")
+  .addEventListener("click", (e) => {
+    var href = imageSlide.contentElement.value;
+    var type = imageSlide.titleElement.value;
+    if (!href && !type) {
+      alert("URL ảnh hoặc định dạng ảnh sai");
+    } else {
+      if (href === "http://mau.post" || href === "http://tuychon.post") {
+      }
+      imageSlide.addToList(type, href);
+    }
+  });
+
+var specifications = new InputListManager(
+  document.querySelector(".slide-specification-list"),
+  [],
+  {
+    titleElement: document.querySelector(".slide-specification_add-url"),
+    contentElement: document.querySelector(".slide-specification_add-typefile"),
+    template: (title, content, id) =>
+      `<div class="title" contenteditable="true"> ${title} </div> 
+      <div class="type" contenteditable="true"> ${content} </div> 
+      <button type="button" class="slide-specification_add-delete bg-blue-500" data-delete="${id}" onclick="specifications.deleteFromList(this.getAttribute('data-delete'))" > x </button>
+      `,
+  },
+  "specification"
+);
+
+document
+  .querySelector(".slide-specification_add-submit")
+  .addEventListener("click", (e) => {
+    var content = specifications.contentElement.value;
+    var title = specifications.titleElement.value;
+    if (!title && !content) {
+      alert("vui lòng nhập lại");
+    } else {
+      specifications.addToList(title, content);
+    }
+  });
+
+function insertImageByURL() {
+  var url = prompt("Enter the URL of the image:");
+  if (url) {
+    content.focus();
+    var range = content.getSelection();
+    var value = {
+      text: `
+        <a href="${url}" style="display: block; padding: 1em 0; text-align: center; ">
+          <img alt="" border="0" height="320" data-original-height="1313" data-original-width="1120" src="${url}"/>
+        </a>
+      `,
+      style: 'clear: both;'
+    };
+    content.insertEmbed(range.index, 'separator', value, Quill.sources.USER);
+    // content.clipboard.dangerouslyPasteHTML(range.index, );
+  }
+}
+var insertImageBtn = document.getElementById("insertImageBtn");
+insertImageBtn.addEventListener("click", insertImageByURL);
+
+function isNotEmpty(value) {
+  return (
+    value !== null &&
+    value !== undefined &&
+    value !== "" &&
+    (!Array.isArray(value) || value.length > 0)
+  );
+}
+
+function getAllPostData() {
+  var blogTitle = inputElement.title.value;
+  var blogProductCode = inputElement.productCode.value;
+  var blogLabels = inputElement.labels.value;
+  var oldPrice = inputElement.oldPrice.value;
+  var newPrice = inputElement.newPrice.value;
+  var PASS_CODE = inputElement.passCode.value;
+
+  var promotionData = promotion.root.innerHTML;
+  var contentData = content.root.innerHTML;
+  var descriptionData = description.root.innerHTML;
+
+  var imageSlideData = imageSlide.storageList;
+  var specificationsData = specifications.storageList;
+
+  if (
+    !isNotEmpty(blogTitle) ||
+    !isNotEmpty(blogProductCode) ||
+    !isNotEmpty(blogLabels) ||
+    !isNotEmpty(oldPrice) ||
+    !isNotEmpty(newPrice) ||
+    !isNotEmpty(promotionData) ||
+    !isNotEmpty(contentData) ||
+    !isNotEmpty(descriptionData) ||
+    !isNotEmpty(specificationsData) ||
+    !isNotEmpty(PASS_CODE)
+  ) {
+    readyToPost = false;
+    return;
+  }
+
+  postData.accessCode = PASS_CODE;
+  postData.title = blogTitle;
+  // postData.enclosures = imageSlideData.map((item) => ({
+  //   href: item.content,
+  //   mineType: item.title,
+  // }));
+  postData.labels = blogLabels.split(",").map((label) => label.trim());
+  var contentSource = `
+  <style>
+  .ql-editor {
+    box-sizing: unset !important;
+    line-height: unset !important;
+    height: unset !important;
+    outline: unset !important;
+    overflow-y: unset !important;
+    padding: unset !important;
+    tab-size: unset !important;
+    -moz-tab-size: 4;
+    text-align: unset !important;
+    white-space: unset !important;
+    word-wrap: unset !important;
+}
+</style>
+  <div class="ql-editor">
+    ${contentData}
+  </div>
+  <giaban>${newPrice}</giaban>
+  <giacu>${oldPrice}</giacu>
+  <mota>${descriptionData}</mota>
+  <km>${promotionData}</km>
+  <thongso>
+    <table id="tskt">
+      <tbody>
+          ${specificationsData
+            .map(
+              (item) => `
+            <tr>
+              <td>${item.title}</td>
+              <td>${item.content}</td>
+            </tr>
+          `
+            )
+            .join("")}
+      </tbody>
+    </table>
+  </thongso>
+`;
+
+  postData.content = contentSource;
+  postData.productCode = blogProductCode;
+  readyToPost = true;
+}
+
+document.querySelector("#send-post").addEventListener("click", (e) => {
+  getAllPostData();
+  if (readyToPost) {
+    if (!preventSendPostButton) {
+      submitForm();
+    } else {
+      alert("Hãy chờ một lúc nữa để post xong");
+    }
+  } else {
+    alert("hãy xem lại, còn thiếu nội dung gì đó");
+  }
+});
+
+// var postData = {
+//   title: "OPPO Find N2 Flip 5G",
+//   content: '\n      <style>\n      .ql-editor {\n        box-sizing: unset !important;\n        line-height: unset !important;\n        height: unset !important;\n        outline: unset !important;\n        overflow-y: unset !important;\n        padding: unset !important;\n        tab-size: unset !important;\n        -moz-tab-size: 4;\n        text-align: unset !important;\n        white-space: unset !important;\n        word-wrap: unset !important;\n    }\n    </style>\n      <div class="ql-editor">\n        <p>&nbsp;Với nhiều điểm nổi bật như chip Snapdragon 8 Gen 2 siêu mạnh mới nhất của Qualcomm, camera chính 200MP bộ nhớ trong chuẩn mới UFS 4.0 nhanh gấp đôi UFS 3.1 cùng màn hình&nbsp;Dynamic AMOLED 2X độ phân giải 2K siêu nét và nhiều tính năng, nâng cấp hấp dẫn khác. Sau đây là phần chi tiết:</p><p class="ql-align-center"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhX_fJ5tL5XrIGiqbmoTmAPalzgZFeYhlvme92r3gXWM2HQxNrlEtYdU4pXH-PnOtT1gTcRNnYUFq8b2kzb4BpNqHsrE65C3mgWLyo0FlKVQloTk1fDKoIAbFB4_P4sdB8N4W3AP_aBS5vOkpisWRiLeHHZpKd6kEevFEt_lVGWSFk_uBpbTdz0aMUqRAbY/s300/52a4d042-660a-4d1f-8aee-ea3b86b533ce-image.png" target="_blank" style="background-color: transparent; color: rgb(51, 51, 51);"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhX_fJ5tL5XrIGiqbmoTmAPalzgZFeYhlvme92r3gXWM2HQxNrlEtYdU4pXH-PnOtT1gTcRNnYUFq8b2kzb4BpNqHsrE65C3mgWLyo0FlKVQloTk1fDKoIAbFB4_P4sdB8N4W3AP_aBS5vOkpisWRiLeHHZpKd6kEevFEt_lVGWSFk_uBpbTdz0aMUqRAbY/s16000/52a4d042-660a-4d1f-8aee-ea3b86b533ce-image.png" alt="Điện thoại Samsung Galaxy S23 Ultra Chính Hãng"></a></p><p><br></p><p class="ql-align-center"><br></p><p><br></p><p>Samsung Galaxy S23 Ultra nâng cấp gì?</p><p>So với người tiền nhiệm thì S23 Ultra có rất nhiều điểm nâng cấp, điển hình có thể kế đến như sau:</p><p>Chip Snapdragon 8 Gen 2</p><p>Cũng là Snapdragon 8 Gen 2 nhưng đây là còn chip có tên mã&nbsp;SM8550-AC được tăng xung nhịp tối đa lên 3.36GHz cao hơn 5,33% so với bản thông thường trên các máy khác trên thị trường. Cấu trúc các nhân CPU gồm: 1 lõi Cortex-X3 3.36 GHz, 2 nhân&nbsp;Cortex-A715 2.8 GHz, 2 nhân Cortex-A710 cũng là 2.8 GHz và 3 nhân tiết kiêm điện 2.0 GHz Cortex-A510.</p><p>Với nhiều điểm nổi bật như chip Snapdragon 8 Gen 2 siêu mạnh mới nhất của Qualcomm, camera chính 200MP bộ nhớ trong chuẩn mới UFS 4.0 nhanh gấp đôi UFS 3.1 cùng màn hình&nbsp;Dynamic AMOLED 2X độ phân giải 2K siêu nét và nhiều tính năng, nâng cấp hấp dẫn khác. Sau đây là phần chi tiết:</p><p class="ql-align-center"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhn6pgqLFeQ2LpYsfoofENeA-Nsg2gc9K-FoRdDAFxQGAVYI_xirrnsPGf08ZFTuROoivNFP4HFPIYI36_MA6yJ4E15bRKHMLt_YjypjCUlQyvi-tczaJSV7-OaVtyoY2-a9prcU0c4pcQ714qoG3WeDo6gFFN9zHM_v8vU6SZk_Two_uB93ULa4IQGXpbC/s1000/samsung-galaxy-s23-ultra-0007-8.jpg.webp" target="_blank" style="background-color: transparent; color: rgb(51, 51, 51);"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhn6pgqLFeQ2LpYsfoofENeA-Nsg2gc9K-FoRdDAFxQGAVYI_xirrnsPGf08ZFTuROoivNFP4HFPIYI36_MA6yJ4E15bRKHMLt_YjypjCUlQyvi-tczaJSV7-OaVtyoY2-a9prcU0c4pcQ714qoG3WeDo6gFFN9zHM_v8vU6SZk_Two_uB93ULa4IQGXpbC/s16000/samsung-galaxy-s23-ultra-0007-8.jpg.webp"></a></p><p><br></p><p><br></p><p>Samsung Galaxy S23 Ultra nâng cấp gì?</p><p>So với người tiền nhiệm thì S23 Ultra có rất nhiều điểm nâng cấp, điển hình có thể kế đến như sau:</p><p>Camera 200 MP</p><p>Sở hữu cụm camera chính 200 MP có khẩu độ f/1.7, tiêu cự 24mm, độ lớn cảm biến&nbsp;1/1.3", cho ra kích thước điểm ảnh 0.6µm, hỗ trợ lấy nét da hướng PDAF, lấy nét&nbsp;Laser AF và quan trọng nhất là tính năng chống rung quang học&nbsp;OIS chất lượng.</p>\n      </div>\n      <giaban>12121212</giaban>\n      <giacu>121212</giacu>\n      <mota><p>ádfasd</p></mota>\n      <km><p><span style="background-color: rgb(252, 253, 212); color: rgb(51, 51, 51);">⭐ Giảm</span><strong style="background-color: rgb(252, 253, 212); color: rgb(191, 30, 46);">&nbsp;250.000đ</strong><span style="background-color: rgb(252, 253, 212); color: rgb(51, 51, 51);">&nbsp;khi mua kèm gói bảo hành VIP 12 tháng 1 Đổi 1.</span></p><p><span style="background-color: rgb(252, 253, 212); color: rgb(51, 51, 51);">⭐ Giảm trực tiếp 40%, tối đa&nbsp;</span><strong style="background-color: rgb(252, 253, 212); color: rgb(191, 30, 46);">600.000 VNĐ</strong><span style="background-color: rgb(252, 253, 212); color: rgb(51, 51, 51);">&nbsp;khi mở thẻ TP Bank EVO.</span></p><p><span style="background-color: rgb(252, 253, 212); color: rgb(51, 51, 51);">⭐&nbsp;</span><strong style="background-color: rgb(252, 253, 212); color: rgb(191, 30, 46);">Thu cũ đổi mới:</strong><span style="background-color: rgb(252, 253, 212); color: rgb(51, 51, 51);">&nbsp;Thu giá cao trợ giá đến&nbsp;</span><strong style="background-color: rgb(252, 253, 212); color: rgb(191, 30, 46);">95%.</strong></p><p><span style="background-color: rgb(252, 253, 212); color: rgb(51, 51, 51);">⭐ Tặng cường lực.</span></p></km>\n      <thongso>\n        <table id="tskt">\n          <tbody>\n              \n                <tr>\n                  <td>Hãng sản xuất</td>\n                  <td>Samsung</td>\n                </tr>\n              \n                <tr>\n                  <td>Kích thước màn hình</td>\n                  <td>6.8 inches</td>\n                </tr>\n              \n                <tr>\n                  <td>Độ phân giải màn hình</td>\n                  <td>1440 x 3088 pixels</td>\n                </tr>\n              \n                <tr>\n                  <td>Loại màn hình</td>\n                  <td>Trước: Dynamic AMOLED 2X, 120Hz, HDR10+, 1750 nits (tối đa) Corning Gorilla Glass Victus 2 Always-on display</td>\n                </tr>\n              \n                <tr>\n                  <td>Camera sau</td>\n                  <td>\t12 MP, f/1.6, 26mm (wide), 1.4µm, dual pixel PDAF, OIS 12 MP, f/2.4, 120˚, 13mm (ultrawide), 1/3.6"</td>\n                </tr>\n              \n                <tr>\n                  <td>Camera trước</td>\n                  <td>\t12 MP, f/2.2, 23mm (wide), 1/3.6" SL 3D, (depth/biometrics sensor)</td>\n                </tr>\n              \n                <tr>\n                  <td></td>\n                  <td>\tTrước: 4K@24/30/60fps, 1080p@30/60/120fps, gyro-EIS Sau: 4K@24/30/60fps, 1080p@30/60/120/240fps, HDR, Dolby Vision HDR (up to 30fps), stereo sound rec.</td>\n                </tr>\n              \n          </tbody>\n        </table>\n      </thongso>\n  ',
+//   labels: ["san-pham"],
+//   PASS_CODE: "bomaylasomot",
+//   enclosures: [
+//     {
+//       url: "http://mau.post",
+//       type: '{   "Trắng",   "Đen" }',
+//     },
+//     {
+//       url: "https://lh3.googleusercontent.com/-2DUS0g9bRcE/ZLs_mvTF2YI/AAAAAAAABMs/KH0CcJeANN4YA1PXL0B0ehEAK4h-tITUQCNcBGAsYHQ/h240/samsung-galaxy-s23-ultra-0008-7.jpg.webp",
+//       type: "image/jpeg",
+//     },
+//     {
+//       url: "https://lh3.googleusercontent.com/-A1jc2tsajE8/ZLs_mOzWt5I/AAAAAAAABMo/22HFe9v741g0dLbC3lmnfLvLIDmwqVjBgCNcBGAsYHQ/h240/samsung-galaxy-s23-ultra-0007-8.jpg.webp",
+//       type: "image/jpeg",
+//     },
+//     {
+//       url: "https://lh3.googleusercontent.com/-EVkKmF4RTYc/ZLs_nxlvKLI/AAAAAAAABM0/DB0KytZ0L80SbKXFuMymk4CcIYBHccXZACNcBGAsYHQ/h240/samsung-galaxy-s23-ultra-0011-4.jpg.webp",
+//       type: "image/jpeg",
+//     },
+//   ],
+//   productCode: "ưefwef",
+// };
+
+async function getAccessToken(accessCode) {
+  try {
+    const appUrl = 'https://script.google.com/macros/s/AKfycbyFZaqTkKhn6ic5uh0dQFO3_Y8VYnrBHUieQhlXgDxU4pO1jAqFDF8-rBKJpVr7st-y_g/exec';
+    const accessTokenResponse = await fetch(appUrl + `?handle=getAccessToken` + `&accessCode=${accessCode}`);
+    return accessTokenResponse.json();
+  } catch (error) {
+    ErrorCollection.throwError(error);
+  }
+}
+
+async function insertPost(blogId, access_token) {
+  const url = `https://www.googleapis.com/blogger/v3/blogs/${blogId}/posts/`;
+  var payload = {
+    kind: "blogger#post",
+    blog: {id: blogId},
+    title: postData.title,
+    content: postData.content,
+    labels: postData.labels,
+  };
+
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      "headers": {
+        "Authorization": `Bearer ${access_token}`,
+        "Content-Type": 'application/json'
+      }, 
+      "body": JSON.stringify(payload)
+    });
+    return response;
+  } catch (error) {
+    ErrorCollection.throwError(error);
+  }
+}
+
+async function submitForm() {
+  try {
+    preventSendPostButton = true;
+    const accessTokenResponse = await getAccessToken(postData.accessCode);
+    const access_token = accessTokenResponse.access_token;
+    if (!access_token) {
+      alert('mã xác nhận không đúng');
+      return;
+    }
+    const blogCreatedResponse = insertPost(BloggerId, access_token);
+    blogCreatedResponse
+        .then(res => res.json())
+        .then(async (response) => {
+          preventSendPostButton = false;
+          console.log(response);
+          if (response.url) {
+            alert("Thành công tạo post!");
+            if(isNotEmpty(response)) {
+              blogEditPage.addEvent('click', (element) => {
+                window.open(`https://www.blogger.com/u/1/blog/post/edit/${BloggerId}/${response.id}`, '_blank');
+              }).setEnable();
+              blogPostRedirect.addEvent('click', (element) => {
+                window.open((response.url), '_blank');
+              }).setEnable();
+              copyContent.setEnable();
+            }   
+          } else {
+            alert("Có gì đó lỗi vui lòng liên hệ tới nhà phát triển.");
+            ErrorCollection.throwError("")
+          }
+        })
+        .catch((error) => {
+          alert(
+            "An error occurred while submitting the form. Please try again later."
+          );
+          console.error("Error:", error);
+        });
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+window.addEventListener("error", e => {
+  ErrorCollection.throwError(`(${e.lineno}:${e.colno}) - ${e.filename} : ${e.message}`);
+})
+   </script>
+</body>
+</html>
